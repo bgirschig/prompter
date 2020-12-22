@@ -5,11 +5,19 @@ html, body {
   overflow: hidden;
 }
 textarea {
-  font: inherit;
+  /* font: inherit; */
   width: 100%;
   height: 100%;
   font-size: 4vw;
   border: none;
   padding: 2vw;
   box-sizing: border-box;
+  background-color: transparent;
+}
+
+.darkTheme body {
+  background-color: black;
+}
+.darkTheme textarea {
+  color: rgba(255, 255, 255, 0.315);
 }
