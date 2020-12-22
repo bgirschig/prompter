@@ -55,8 +55,15 @@ function applyState() {
   textArea.style.fontSize = `${state.text.size}vw`;
   sendState();
 }
+
+// throttled state update function
+let sendTimeout = null;
 function sendState() {
-  socket.emit('state', state);
+  if (sendTimeout) return;
+  sendTimeout = setTimeout(() => {
+    socket.emit('state', state);
+    sendTimeout = null;
+  }, 300);
 }
 
 main();
