@@ -1,30 +1,34 @@
 import "/socket.io/socket.io.js";
+import ScrollController from "./control-panes/ScrollController.js";
+import SpeedController from "./control-panes/SpeedController.js";
 
-var socket = io();
+const socket = io();
+const state = {};
+let controllers = [];
+let currentController = null;
 
-document.body.addEventListener('wheel', evt => {
-  const data = { type: 'scroll', x: evt.deltaX, y: evt.deltaY };
-  socket.emit('event', data);
-});
+function main() {
+  socket.on('state', newState => {
+    Object.assign(state, newState);
+  });
 
-let isMouseDown = false;
-let mouseDownStart = null;
-document.body.addEventListener('touchstart', evt => {
-  if (isMouseDown) return;
-  isMouseDown = true;
-  mouseDownStart = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
-  // socket.emit('event', { type: 'dragstart' });
-});
-document.body.addEventListener('touchmove', evt => {
-  if (!isMouseDown) return;
-  const delta = {
-    x: evt.touches[0].clientX - mouseDownStart.x,
-    y: evt.touches[0].clientY - mouseDownStart.y,
-  }
-  // socket.emit('event', { type: 'drag', x: delta.x, y: delta.y });
-  socket.emit('event', { type: 'scrollSpeed', speed: delta.y/300 });
-});
-document.body.addEventListener('touchend', evt => {
-  isMouseDown = false;
-  socket.emit('event', { type: 'scrollSpeed', speed: 0 });
-});
+  controllers.scroll = new ScrollController('.controlPane.scroll', state, onControllerEvent);
+  controllers.speed = new SpeedController('.controlPane.speed', state, onControllerEvent);
+
+  gotoController('scroll');
+}
+
+function onControllerEvent(type, data) {
+  // Here we'll be able to apply global settings like scroll speed, inverted scroll, etc...
+  socket.emit(type, data);
+}
+
+function gotoController(name) {
+  if (currentController === name) return;
+  if (currentController) controllers[currentController].deactivate();
+  console.log(controllers, name);
+  controllers[name].activate();
+  currentController = name;
+}
+
+main();

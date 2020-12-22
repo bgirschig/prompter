@@ -17,8 +17,18 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   console.log('a user connected');
   
-  socket.on('event', (msg) => {
-    socket.broadcast.emit('event', msg);
+  socket.broadcast.emit('new connection', {});
+  socket.on('scrollTo', (msg) => {
+    socket.broadcast.emit('scrollTo', msg);
+  });
+  socket.on('scrollBy', (msg) => {
+    socket.broadcast.emit('scrollBy', msg);
+  });
+  socket.on('scrollSpeed', (msg) => {
+    socket.broadcast.emit('scrollSpeed', msg);
+  });
+  socket.on('state', (msg) => {
+    socket.broadcast.emit('state', msg);
   });
   
   socket.on('disconnect', () => {
