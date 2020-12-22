@@ -1,18 +1,20 @@
 import "/socket.io/socket.io.js";
 import ScrollController from "./control-panes/ScrollController.js";
 import SpeedController from "./control-panes/SpeedController.js";
+import ButtonsController from "./control-panes/ButtonsController.js";
 
 const socket = io();
 const state = {};
 
 let currentControllerId = null;
-const paneButtons = document.querySelector('.paneButtons')
+const controllers = {};
+const paneButtons = document.querySelector('.paneButtons');
 
 const controllerConfigs = [
   {constructor: ScrollController, id:'scroll'},
   {constructor: SpeedController, id:'speed'},
+  {constructor: ButtonsController, id:'buttons'},
 ]
-const controllers = {};
 
 function main() {
   socket.on('state', newState => {
@@ -33,7 +35,7 @@ function main() {
     paneButtons.appendChild(button);
   });
 
-  gotoController(controllerConfigs[0].id);
+  gotoController('buttons');
 }
 
 function onControllerEvent(type, data) {

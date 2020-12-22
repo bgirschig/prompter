@@ -5,18 +5,17 @@ var socket = io("http://localhost:1992");
 const textArea = document.querySelector('textarea');
 
 const state = {
-  window: { width: window.innerWidth, height: window.innerHeight },
+  window: { width: 0, height: 0 },
   text: { size: 4 },
   scrollPosition: 0,
   scrollSpeed: 0,
+  maxScroll: 0,
 }
 
 function main() {
-  applyState();
+  updateState();
   
-  window.addEventListener('resize', () => {
-    state.window = { width: window.innerWidth, height: window.innerHeight };
-  });
+  window.addEventListener('resize', updateState);
   textArea.addEventListener('scroll', () => {
     state.scrollPosition = textArea.scrollTop
   });
@@ -24,11 +23,11 @@ function main() {
   socket.on('new connection', sendState);
   socket.on('scrollTo', (value) => {
     state.scrollPosition = value;
-    applyState();
+    updateState();
   });
   socket.on('scrollBy', (value) => {
     state.scrollPosition += value;
-    applyState();
+    updateState();
   });
   socket.on('scrollSpeed', (value) => {
     state.scrollSpeed = value;
@@ -45,6 +44,13 @@ function loop(deltaT=0) {
     applyState();
   }
   requestAnimationFrame(loop);
+}
+
+function updateState() {
+  state.maxScroll = textArea.scrollHeight-textArea.offsetHeight;
+  state.window = { width: window.innerWidth, height: window.innerHeight };
+  applyState();
+  sendState();
 }
 
 function applyState() {
