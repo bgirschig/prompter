@@ -15,7 +15,6 @@ export default class ControlPane {
   }
   hide() {
     this.element.style.display = 'none';
-    console.log(this.element.style.display);
   }
   addListener(type, callback, options) {
     this.listeners.push({type, callback, options});

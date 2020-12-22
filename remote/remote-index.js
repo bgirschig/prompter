@@ -4,18 +4,36 @@ import SpeedController from "./control-panes/SpeedController.js";
 
 const socket = io();
 const state = {};
-let controllers = [];
-let currentController = null;
+
+let currentControllerId = null;
+const paneButtons = document.querySelector('.paneButtons')
+
+const controllerConfigs = [
+  {constructor: ScrollController, id:'scroll'},
+  {constructor: SpeedController, id:'speed'},
+]
+const controllers = {};
 
 function main() {
   socket.on('state', newState => {
     Object.assign(state, newState);
   });
 
-  controllers.scroll = new ScrollController('.controlPane.scroll', state, onControllerEvent);
-  controllers.speed = new SpeedController('.controlPane.speed', state, onControllerEvent);
+  controllerConfigs.forEach(controllerConfig => {
+    const controller = new controllerConfig.constructor(
+      `.controlPane.${controllerConfig.id}`,
+      state, onControllerEvent);
 
-  gotoController('scroll');
+    controllers[controllerConfig.id] = controller;
+
+    const button = document.createElement('button');
+    button.innerText = controllerConfig.id;
+    button.classList.add(controllerConfig.id);
+    button.onclick = () => gotoController(controllerConfig.id);
+    paneButtons.appendChild(button);
+  });
+
+  gotoController(controllerConfigs[0].id);
 }
 
 function onControllerEvent(type, data) {
@@ -23,12 +41,17 @@ function onControllerEvent(type, data) {
   socket.emit(type, data);
 }
 
-function gotoController(name) {
-  if (currentController === name) return;
-  if (currentController) controllers[currentController].deactivate();
-  console.log(controllers, name);
-  controllers[name].activate();
-  currentController = name;
+function gotoController(controllerId) {
+  if (currentControllerId === controllerId) return;
+
+  if (currentControllerId) {
+    paneButtons.querySelector(`button.${currentControllerId}`).classList.remove('active');
+    controllers[currentControllerId].deactivate();
+  }
+  
+  controllers[controllerId].activate();
+  paneButtons.querySelector(`button.${controllerId}`).classList.add('active');
+  currentControllerId = controllerId;
 }
 
 main();

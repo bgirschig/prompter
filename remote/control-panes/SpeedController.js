@@ -2,7 +2,7 @@ import ControlPane from "./ControlPane.js";
 
 const SPEED_FACTOR = 1; // pixels per second at max speed
 
-export default class ScrollController extends ControlPane {
+export default class SpeedController extends ControlPane {
   constructor() {
     super(...arguments);
 
