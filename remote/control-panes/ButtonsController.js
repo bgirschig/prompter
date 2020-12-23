@@ -19,14 +19,14 @@ export default class ButtonsController extends ControlPane {
 
   upStart(e) {
     e.preventDefault();
-    this.emit('scrollSpeed', -0.5);
+    this.emit('scrollSpeed', -0.1);
   }
   upEnd() {
     this.emit('scrollSpeed', 0);
   }
   downStart(e) {
     e.preventDefault();
-    this.emit('scrollSpeed', 0.5);
+    this.emit('scrollSpeed', 0.1);
   }
   downEnd() {
     this.emit('scrollSpeed', 0);
