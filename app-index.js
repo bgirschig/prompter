@@ -17,8 +17,11 @@ function main() {
   updateState();
   
   window.addEventListener('resize', updateState);
-  window.addEventListener('keyup', evt => {
-    if (evt.key === 'q') qrcodeImage.classList.toggle('hidden'); 
+  document.addEventListener('keyup', evt => {
+    if (evt.target === textArea) {
+      if (evt.key === 'Escape') textArea.blur();
+    }
+    else if (evt.key === 'q') qrcodeImage.classList.toggle('hidden'); 
   })
   textArea.addEventListener('scroll', () => {
     state.scrollPosition = textArea.scrollTop
