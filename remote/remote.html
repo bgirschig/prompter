@@ -1,20 +1,24 @@
 <!doctype html>
-<html>
+<html class="darkTheme">
   <head>
     <title>bg-prompter remote</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div class="controlPane scroll">Basic scroll</div>
-    <div class="controlPane speed">Touch and drag to set scroll speed</div>
+    <div class="controlPane scroll">
+      <div class="content">↑<br>Basic scroll<br>↓</div>
+    </div>
+    <div class="controlPane speed">
+      <div class="content">Touch and drag to set scroll speed</div>
+    </div>
     <div class="controlPane buttons">
       <button data-hold-action="up">↑</button>
       <button data-hold-action="down">↓</button>
-      <button data-click-action="prev">⇡</button>
-      <button data-click-action="next">⇣</button>
-      <button data-click-action="top">↥</button>
-      <button data-click-action="bottom">↧</button>
+      <button data-click-action="prev">↱</button>
+      <button data-click-action="next">↲</button>
+      <button data-click-action="top">↟</button>
+      <button data-click-action="bottom">↡</button>
     </div>
 
     <div class="paneButtons"></div>

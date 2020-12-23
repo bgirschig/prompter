@@ -4,10 +4,19 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  font-family: sans-serif;
 }
 .controlPane {
   width: 100%;
   height: 100%;
+}
+.controlPane .content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 80%;
+  font-size: 2rem;
 }
 .paneButtons {
   position: absolute;
@@ -19,7 +28,7 @@ html, body {
 }
 .paneButtons button {
   background-color: transparent;
-  color: black;
+  color: inherit;
   font-size: 1rem;
   padding: 7px 15px;
   border: none;
@@ -32,6 +41,9 @@ html, body {
   background-color: rgba(13, 150, 155, 0.603);
   color: white;
 }
+.paneButtons button:focus {
+  outline: none;
+}
 
 /* Buttons control pane */
 .controlPane.buttons {
@@ -42,11 +54,24 @@ html, body {
 }
 .controlPane.buttons button {
   background-color: rgba(0, 0, 0, 0.534);
-  color: white;
+  color: inherit;
+  text-shadow: inherit;
   border: none;
   font-size: 15vw;
   user-select: none;
 }
 .controlPane.buttons button:active {
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* dark theme */
+.darkTheme body {
+  background-color: black;
+  color: rgba(255, 255, 255, 0.5);
+}
+.darkTheme .controlPane.buttons button:active {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.darkTheme .controlPane {
+  text-shadow: white 0 0 10px;
 }
