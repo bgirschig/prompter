@@ -10,9 +10,10 @@ textarea {
   height: 100%;
   font-size: 4vw;
   border: none;
-  padding: 2vw;
+  padding: 2vw 3vw;
   box-sizing: border-box;
   background-color: transparent;
+  padding-bottom: calc(100vh - 2vw - 1em);
 }
 textarea:focus {
   outline: none;
@@ -37,4 +38,13 @@ img.qrcode {
 }
 .hidden {
   display: none;
+}
+
+
+#focusPoint {
+  font-size: 4vw;
+  font-family: monospace;
+  color: #37e4ff;
+  position: absolute;
+  top: 2vw;
 }
