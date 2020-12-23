@@ -1,8 +1,8 @@
 import "/socket.io/socket.io.js";
+import displayMirror from "./displayMirror.js";
 import ScrollController from "./control-panes/ScrollController.js";
 import SpeedController from "./control-panes/SpeedController.js";
 import ButtonsController from "./control-panes/ButtonsController.js";
-
 const socket = io();
 const state = {};
 
@@ -17,10 +17,6 @@ const controllerConfigs = [
 ]
 
 function main() {
-  socket.on('state', newState => {
-    Object.assign(state, newState);
-  });
-
   controllerConfigs.forEach(controllerConfig => {
     const controller = new controllerConfig.constructor(
       `.controlPane.${controllerConfig.id}`,
@@ -35,7 +31,13 @@ function main() {
     paneButtons.appendChild(button);
   });
 
-  gotoController('buttons');
+  displayMirror(socket);
+
+  socket.on('state', newState => {
+    Object.assign(state, newState);
+  });
+
+  gotoController('scroll');
 }
 
 function onControllerEvent(type, data) {

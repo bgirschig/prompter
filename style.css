@@ -14,6 +14,7 @@ textarea {
   box-sizing: border-box;
   background-color: transparent;
   padding-bottom: calc(100vh - 2vw - 1em);
+  font-family: Courier, monospace;
 }
 textarea:focus {
   outline: none;

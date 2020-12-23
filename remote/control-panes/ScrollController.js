@@ -10,7 +10,7 @@ export default class ScrollController extends ControlPane {
 
   initMouseScroll() {
     this.element.addEventListener('wheel', evt => {
-      controller.emit('scrollBy', evt.deltaY);
+      this.emit('scrollBy', evt.deltaY);
     });
   }
 

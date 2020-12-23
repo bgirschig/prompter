@@ -36,6 +36,9 @@ io.on('connection', async (socket) => {
   socket.on('state', (msg) => {
     socket.broadcast.emit('state', msg);
   });
+  socket.on('text', (msg) => {
+    socket.broadcast.emit('text', msg);
+  });
   
   socket.on('disconnect', () => {
     console.log('user disconnected');

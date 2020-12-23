@@ -9,22 +9,26 @@ const state = {
   window: { width: 0, height: 0 },
   text: { size: 4 },
   scrollPosition: 0,
+  scrollPositionRelative: 0,
   scrollSpeed: 0,
   maxScroll: 0,
 }
 
 function main() {
   updateState();
+  sendText();
   
-  window.addEventListener('resize', updateState);
+  window.addEventListener('resize', ()=>setTimeout(updateState, 100));
   document.addEventListener('keyup', evt => {
     if (evt.target === textArea) {
       if (evt.key === 'Escape') textArea.blur();
     }
     else if (evt.key === 'q') qrcodeImage.classList.toggle('hidden'); 
   })
+  textArea.addEventListener('change', sendText);
   textArea.addEventListener('scroll', () => {
-    state.scrollPosition = textArea.scrollTop
+    state.scrollPosition = textArea.scrollTop;
+    updateState();
   });
 
   socket.on('welcome', data => {
@@ -33,15 +37,16 @@ function main() {
   });
   socket.on('new connection', () => {
     qrcodeImage.classList.add('hidden');
+    sendText();
   });
   
   socket.on('scrollTo', (value) => {
     state.scrollPosition = value;
-    updateState();
+    applyState();
   });
   socket.on('scrollBy', (value) => {
     state.scrollPosition += value;
-    updateState();
+    applyState();
   });
   socket.on('scrollSpeed', (value) => {
     state.scrollSpeed = value;
@@ -65,6 +70,7 @@ function loop(time=0) {
 
 function updateState() {
   state.maxScroll = textArea.scrollHeight-textArea.offsetHeight;
+  state.scrollPositionRelative = state.scrollPosition / state.maxScroll;
   state.window = { width: window.innerWidth, height: window.innerHeight };
   applyState();
   sendState();
@@ -86,7 +92,22 @@ function sendState() {
   sendTimeout = setTimeout(() => {
     socket.emit('state', state);
     sendTimeout = null;
-  }, 300);
+  }, 10);
+}
+
+function sendText() {
+  const computedStyle = getComputedStyle(textArea);
+  const focusPointStyle = getComputedStyle(document.getElementById('focusPoint'));
+  const data = {
+    text: textArea.textContent,
+    width: textArea.offsetWidth,
+    height: textArea.offsetHeight,
+    clientWidth: textArea.clientWidth,
+    font: computedStyle.font,
+    padding: computedStyle.padding,
+    focusPoint: { font: focusPointStyle.font, top: focusPointStyle.top },
+  }
+  socket.emit('text', data);
 }
 
 main();
