@@ -18,7 +18,6 @@ function main() {
   
   window.addEventListener('resize', updateState);
   window.addEventListener('keyup', evt => {
-    console.log(evt.key);
     if (evt.key === 'q') qrcodeImage.classList.toggle('hidden'); 
   })
   textArea.addEventListener('scroll', () => {
@@ -34,24 +33,30 @@ function main() {
   });
   
   socket.on('scrollTo', (value) => {
+    console.log('scrollTo', value);
     state.scrollPosition = value;
     updateState();
   });
   socket.on('scrollBy', (value) => {
+    console.log('scrollBy', value);
     state.scrollPosition += value;
     updateState();
   });
   socket.on('scrollSpeed', (value) => {
+    console.log('scrollSpeed', value);
     state.scrollSpeed = value;
   });
 
   loop();
 }
 
-function loop(deltaT=0) {
+let prevTime=0;
+function loop(time=0) {
+  const deltaT = time - prevTime;
+  prevTime = time;
+
   if (state.scrollSpeed !== 0) {
-    const seconds = deltaT / 1000.0;
-    const delta = seconds * state.scrollSpeed;
+    const delta = deltaT * state.scrollSpeed;
     state.scrollPosition += delta;
     applyState();
   }
