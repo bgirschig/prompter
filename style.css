@@ -15,9 +15,17 @@ textarea {
   background-color: transparent;
   padding-bottom: calc(100vh - 2vw - 1em);
   font-family: Courier, monospace;
+  resize: none;
 }
 textarea:focus {
   outline: none;
+}
+textarea::-webkit-scrollbar {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+textarea::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  
 }
 
 .darkTheme body {
