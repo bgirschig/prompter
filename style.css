@@ -14,12 +14,19 @@ textarea {
   box-sizing: border-box;
   background-color: transparent;
 }
+textarea:focus {
+  outline: none;
+}
 
 .darkTheme body {
   background-color: black;
+  color: rgba(255, 255, 255, 0.6);
 }
 .darkTheme textarea {
-  color: rgba(255, 255, 255, 0.315);
+  color: rgba(255, 255, 255, 0.6);
+}
+.darkTheme textarea:focus {
+  color: rgba(255, 255, 255, 1);
 }
 
 
