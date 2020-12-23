@@ -36,17 +36,14 @@ function main() {
   });
   
   socket.on('scrollTo', (value) => {
-    console.log('scrollTo', value);
     state.scrollPosition = value;
     updateState();
   });
   socket.on('scrollBy', (value) => {
-    console.log('scrollBy', value);
     state.scrollPosition += value;
     updateState();
   });
   socket.on('scrollSpeed', (value) => {
-    console.log('scrollSpeed', value);
     state.scrollSpeed = value;
   });
 
