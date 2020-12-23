@@ -104,7 +104,7 @@ function sendText() {
   const computedStyle = getComputedStyle(textArea);
   const focusPointStyle = getComputedStyle(document.getElementById('focusPoint'));
   const data = {
-    text: textArea.textContent,
+    text: textArea.value,
     width: textArea.offsetWidth,
     height: textArea.offsetHeight,
     clientWidth: textArea.clientWidth,
