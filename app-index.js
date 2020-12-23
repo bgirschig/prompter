@@ -18,7 +18,12 @@ function main() {
   updateState();
   sendText();
   
-  window.addEventListener('resize', ()=>setTimeout(updateState, 100));
+  window.addEventListener('resize', ()=> {
+    setTimeout(()=> {
+      updateState();
+      sendText();
+    }, 100);
+  });
   document.addEventListener('keyup', evt => {
     if (evt.target === textArea) {
       if (evt.key === 'Escape') textArea.blur();
