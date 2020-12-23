@@ -5,19 +5,25 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const path = require('path');
+const { networkInterfaces } = require('os');
+const QRCode = require('qrcode');
 
 const port = 1992;
 
 app.use(express.static(path.join(__dirname, 'remote')));
 
 app.get('/', (req, res) => {
-  res.send('socket server ok');
+  res.sendFile(__dirname + '/remote/remote.html');
 });
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('a user connected');
   
-  socket.broadcast.emit('new connection', {});
+  const remoteUrl = `http://${getIp()}:${port}/`;
+  const qrCodeUrl = await QRCode.toDataURL(remoteUrl);
+
+  socket.emit('welcome', {qrCodeUrl});
+  socket.broadcast.emit('new connection', { qrCodeUrl });
   socket.on('scrollTo', (msg) => {
     socket.broadcast.emit('scrollTo', msg);
   });
@@ -35,6 +41,23 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 });
+
+function getIp() {
+  const nets = networkInterfaces();
+  const results = {};
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+        // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+        if (net.family === 'IPv4' && !net.internal) {
+            if (!results[name]) {
+                results[name] = [];
+            }
+            results[name].push(net.address);
+        }
+    }
+  }
+  return results['en0'][0];
+}
 
 http.listen(port, () => {
   console.log(`listening on *:${port}`);

@@ -21,3 +21,13 @@ textarea {
 .darkTheme textarea {
   color: rgba(255, 255, 255, 0.315);
 }
+
+
+img.qrcode {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.hidden {
+  display: none;
+}

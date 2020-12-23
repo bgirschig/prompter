@@ -1,8 +1,9 @@
 /** frontend main script */
 import "http://localhost:1992/socket.io/socket.io.js";
-var socket = io("http://localhost:1992");
 
+var socket = io("http://localhost:1992");
 const textArea = document.querySelector('textarea');
+const qrcodeImage = document.querySelector('img.qrcode');
 
 const state = {
   window: { width: 0, height: 0 },
@@ -16,11 +17,22 @@ function main() {
   updateState();
   
   window.addEventListener('resize', updateState);
+  window.addEventListener('keyup', evt => {
+    console.log(evt.key);
+    if (evt.key === 'q') qrcodeImage.classList.toggle('hidden'); 
+  })
   textArea.addEventListener('scroll', () => {
     state.scrollPosition = textArea.scrollTop
   });
 
-  socket.on('new connection', sendState);
+  socket.on('welcome', data => {
+    qrcodeImage.src = data.qrCodeUrl;
+    qrcodeImage.classList.remove('hidden');
+  });
+  socket.on('new connection', () => {
+    qrcodeImage.classList.add('hidden');
+  });
+  
   socket.on('scrollTo', (value) => {
     state.scrollPosition = value;
     updateState();
