@@ -37,7 +37,7 @@ function main() {
     Object.assign(state, newState);
   });
 
-  gotoController('scroll');
+  gotoController('speed');
 }
 
 function onControllerEvent(type, data) {
