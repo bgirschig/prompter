@@ -1,5 +1,5 @@
 {
-  "name": "bg-prompter",
+  "name": "dites-come-moi",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -28,13 +28,14 @@
   "config": {
     "forge": {
       "packagerConfig": {
+        "name": "Dites côme moi",
         "icon": "assets/logo.png"
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "bg_prompter"
+            "name": "dites_come_moi"
           }
         },
         {
